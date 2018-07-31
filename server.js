@@ -8,18 +8,24 @@ console.log('Hello Noteful!');
 // INSERT EXPRESS APP CODE HERE...
 
 const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 
 // ADD STATIC SERVER HERE
 app.use(express.static('public'));
 
+app.use(morgan('common'));
+
 app.get('/api/notes', (req, res) => {
-  if (req.query.searchTerm) {
-    const filteredData = data.filter(element => element.title.includes(req.query.searchTerm));
+  const searchTerm = req.query.searchTerm;
+  // searches both the body and the title
+  if (searchTerm) {
+    const filteredData = data.filter(note => note.title.includes(searchTerm) || note.content.includes(searchTerm));
     res.json(filteredData);
+  } else {
+    res.json(data);
   }
-  res.json(data);
 });
 
 app.get('/api/notes/:id', (req, res) => {
