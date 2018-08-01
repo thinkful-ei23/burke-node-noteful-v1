@@ -4,12 +4,9 @@ const express = require('express');
 
 const router = express.Router();
 
-
 const data = require('../db/notes');
 const simDB = require('../db/simDB');  // <<== add this
 const notes = simDB.initialize(data); // <<== and this
-
-
 
 router.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query;

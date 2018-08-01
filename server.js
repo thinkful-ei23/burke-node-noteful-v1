@@ -24,7 +24,7 @@ app.use('/api', notesRouter);
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  res.status(404).json({ message: 'Not Found' });
+  next(err);
 });
 
 app.use(function (err, req, res, next) {
