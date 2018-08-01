@@ -88,12 +88,14 @@ const simDB = {
     setTimeout(() => {
       try {
         id = Number(id);
+        console.log('this is the id: ' + id);
         const index = this.data.findIndex(item => item.id === id);
+        console.log('this is the index: ' + index);
         if (index === -1) {
           return callback(null, null);
         } else {
           const len = this.data.splice(index, 1).length;
-          console.log(len);
+          console.log('this is the len :' + len);
           return callback(null, len);
         }
       } catch (err) {
