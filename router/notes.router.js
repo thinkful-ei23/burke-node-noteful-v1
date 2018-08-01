@@ -34,7 +34,6 @@ router.get('/notes/:id', (req, res, next) => {
 router.put('/notes/:id', (req, res, next) => {
   const id = req.params.id;
 
-  /***** Never trust users - validate input *****/
   const updateObj = {};
   const updateFields = ['title', 'content'];
 
@@ -68,6 +67,7 @@ router.post('/notes', (req, res, next) => {
   const { title, content } = req.body;
 
   const newItem = { title, content };
+
   /***** Never trust users - validate input *****/
   if (!newItem.title) {
     const err = new Error('Missing `title` in request body');
@@ -89,17 +89,13 @@ router.post('/notes', (req, res, next) => {
 
 router.delete('/notes/:id', (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
 
-  // check to make sure that id is on one of the notes
-  notes.delete(id, (err, item) => {
+  notes.delete(id, (err) => {
     if (err) {
       return next(err);
     }
     res.sendStatus(204);
   });
 });
-
-
 
 module.exports = router;
