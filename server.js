@@ -2,6 +2,9 @@
 
 // Load array of notes
 const data = require('./db/notes');
+// Simple In-Memory Database
+const simDB = require('./db/simDB');  // <<== add this
+const notes = simDB.initialize(data); // <<== and this
 
 const { PORT } = require('./config');
 const {logger} = require('./middleware/logger');
