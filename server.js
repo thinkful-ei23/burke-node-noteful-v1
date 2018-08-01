@@ -23,7 +23,7 @@ app.use(express.static('public'));
 app.use(logger);
 
 
-app.get('/api/notes', (req, res) => {
+app.get('/api/notes', (req, res, next) => {
   const { searchTerm } = req.query;
   notes.filter(searchTerm, (err, list) => {
     if (err) {
@@ -33,10 +33,14 @@ app.get('/api/notes', (req, res) => {
   });
 });
 
-app.get('/api/notes/:id', (req, res) => {
-  const id = req.params.id;
-  const requestedItem = data.find(item => item.id === Number(id));
-  res.json(requestedItem);
+app.get('/api/notes/:id', (req, res, next) => {
+  const {id} = req.params;
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    res.json(item);
+  });
 });
 
 
