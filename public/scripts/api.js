@@ -31,5 +31,14 @@ const api = {
       data: JSON.stringify(obj),
       success: callback
     });
+  },
+
+  remove: function (id, callback) {
+    return $.ajax({
+      type: 'DELETE',
+      url: `/api/notes/${id}`,
+      dataType: 'json',
+      success: callback
+    });
   }
 };

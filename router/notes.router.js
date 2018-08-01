@@ -2,7 +2,7 @@
 
 const express = require('express');
 const data = require('../db/notes');
-const simDB = require('./db/simDB');  // <<== add this
+const simDB = require('../db/simDB');  // <<== add this
 const notes = simDB.initialize(data); // <<== and this
 
 const morgan = require('morgan');
@@ -80,6 +80,35 @@ router.post('/notes', (req, res, next) => {
   });
 });
 
+router.delete('/notes/:id', (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  // check to make sure that id is on one of the notes
+  notes.delete(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.status(204);
+    } else {
+      next();
+    }
+  });
+});
+
+router.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  res.status(404).json({ message: 'Not Found' });
+});
+
+router.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.json({
+    message: err.message,
+    error: err
+  });
+});
 
 
 
