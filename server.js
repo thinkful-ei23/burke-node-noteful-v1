@@ -7,13 +7,13 @@ const simDB = require('./db/simDB');  // <<== add this
 const notes = simDB.initialize(data); // <<== and this
 
 const { PORT } = require('./config');
+
+// logger
 const {logger} = require('./middleware/logger');
 console.log('Hello Noteful!');
 
 // INSERT EXPRESS APP CODE HERE...
-
 const express = require('express');
-
 const app = express();
 
 // ADD STATIC SERVER HERE
@@ -24,11 +24,13 @@ app.use(logger);
 
 
 app.get('/api/notes', (req, res) => {
-  if (req.query.searchTerm) {
-    const filteredData = data.filter(element => element.title.includes(req.query.searchTerm));
-    res.json(filteredData);
-  }
-  res.json(data);
+  const { searchTerm } = req.query;
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(list); // responds with filtered array
+  });
 });
 
 app.get('/api/notes/:id', (req, res) => {
