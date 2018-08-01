@@ -4,7 +4,7 @@
 const data = require('./db/notes');
 
 const { PORT } = require('./config');
-
+const {logger} = require('./middleware/logger');
 console.log('Hello Noteful!');
 
 // INSERT EXPRESS APP CODE HERE...
@@ -17,12 +17,7 @@ const app = express();
 app.use(express.static('public'));
 
 // server logs
-app.use( (req, res, next) => {
-  const now = new Date();
-  console.log(
-    `${now.toLocaleDateString()} ${now.toLocaleTimeString()} ${req.method} ${req.url}`);
-  next();
-});
+app.use(logger);
 
 
 app.get('/api/notes', (req, res) => {
