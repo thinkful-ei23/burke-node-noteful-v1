@@ -16,6 +16,13 @@ const app = express();
 // ADD STATIC SERVER HERE
 app.use(express.static('public'));
 
+// server logs
+app.use( (req, res, next) => {
+  const now = new Date();
+  console.log(
+    `${now.toLocaleDateString()} ${now.toLocaleTimeString()} ${req.method} ${req.url}`);
+  next();
+});
 
 
 app.get('/api/notes', (req, res) => {
