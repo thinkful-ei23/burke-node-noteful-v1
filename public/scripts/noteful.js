@@ -79,11 +79,6 @@ const noteful = (function () {
 
       noteObj.id = store.currentNote.id;
 
-      // api.update(noteObj.id, noteObj, updateResponse => {
-      //   store.currentNote = updateResponse;
-      //   render();
-      // });
-
       api.update(noteObj.id, noteObj)
         .then(updateResponse => {
           store.currentNote = updateResponse;
@@ -108,17 +103,29 @@ const noteful = (function () {
 
       const noteId = getNoteIdFromElement(event.currentTarget);
 
-      api.remove(noteId, () => {
+      // api.remove(noteId, () => {
 
-        api.search(store.currentSearchTerm, searchResponse => {
+      //   api.search(store.currentSearchTerm, searchResponse => {
+      //     store.notes = searchResponse;
+      //     if (noteId === store.currentNote.id) {
+      //       store.currentNote = {};
+      //     }
+      //     render();
+      //   });
+
+      // });
+
+      api.remove(noteId)
+        .then(() => {
+          return api.search(store.currentSearchTerm);
+        })
+        .then((searchResponse) => {
           store.notes = searchResponse;
           if (noteId === store.currentNote.id) {
             store.currentNote = {};
           }
           render();
         });
-
-      });
     });
   }
 
