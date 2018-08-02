@@ -20,6 +20,17 @@ const api = {
     });
   },
 
+  create: function (obj) {
+    return $.ajax({
+      type: 'POST',
+      url: '/api/notes',
+      contentType: 'application/json',
+      dataType: 'json',
+      processData: false,
+      data: JSON.stringify(obj)
+    });
+  },
+
   update: function(id, obj) {
     return $.ajax({
       type: 'PUT',
