@@ -28,22 +28,13 @@ const api = {
       dataType: 'json',
       data: JSON.stringify(obj),
     });
-    // $.ajax({
-    //   type: 'PUT',
-    //   url: `/api/notes/${id}`,
-    //   contentType: 'application/json',
-    //   dataType: 'json',
-    //   data: JSON.stringify(obj),
-    //   success: callback
-    // });
   },
 
-  remove: function (id, callback) {
+  remove: function (id) {
     return $.ajax({
       type: 'DELETE',
       url: `/api/notes/${id}`,
       dataType: 'json',
-      success: callback
     });
   }
 };

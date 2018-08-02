@@ -37,6 +37,11 @@
       console.log(response);
     })
 
+    api.remove(1002)
+      .then(response => {
+        console.log(response);
+     });
+
     api.search({})
       .then(response => {
         console.log(response)
