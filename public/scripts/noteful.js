@@ -63,12 +63,6 @@ const noteful = (function () {
           store.notes = searchResponse;
           render();
         });
-
-      // api.search(store.currentSearchTerm, searchResponse => {
-      //   store.notes = searchResponse;
-      //   render();
-      // });
-
     });
   }
 
@@ -85,11 +79,16 @@ const noteful = (function () {
 
       noteObj.id = store.currentNote.id;
 
-      api.update(noteObj.id, noteObj, updateResponse => {
-        store.currentNote = updateResponse;
+      // api.update(noteObj.id, noteObj, updateResponse => {
+      //   store.currentNote = updateResponse;
+      //   render();
+      // });
 
-        render();
-      });
+      api.update(noteObj.id, noteObj)
+        .then(updateResponse => {
+          store.currentNote = updateResponse;
+          render();
+        });
 
     });
   }
