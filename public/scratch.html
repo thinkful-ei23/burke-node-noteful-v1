@@ -26,6 +26,19 @@
 
     api.details(1005)
       .then(response => {
+        console.log(response);
+      });
+
+    api.update(1006, {
+    "title": "11 things lady gaga has in common with cats",
+    "content": "Posuere sollicitudin aliquam..."
+    })
+    .then(response => {
+      console.log(response);
+    })
+
+    api.search({})
+      .then(response => {
         console.log(response)
       });
   </script>

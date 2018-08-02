@@ -18,24 +18,24 @@ const api = {
       dataType: 'json',
       url: `/api/notes/${id}`,
     });
-  // function (id, callback) {
-  //   $.ajax({
-  //     type: 'GET',
-  //     dataType: 'json',
-  //     url: `/api/notes/${id}`,
-  //     success: callback
-  //   });
   },
 
-  update: function(id, obj, callback) {
-    $.ajax({
+  update: function(id, obj) {
+    return $.ajax({
       type: 'PUT',
       url: `/api/notes/${id}`,
       contentType: 'application/json',
       dataType: 'json',
       data: JSON.stringify(obj),
-      success: callback
     });
+    // $.ajax({
+    //   type: 'PUT',
+    //   url: `/api/notes/${id}`,
+    //   contentType: 'application/json',
+    //   dataType: 'json',
+    //   data: JSON.stringify(obj),
+    //   success: callback
+    // });
   },
 
   remove: function (id, callback) {
