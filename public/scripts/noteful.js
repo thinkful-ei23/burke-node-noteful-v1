@@ -42,10 +42,16 @@ const noteful = (function () {
 
       const noteId = getNoteIdFromElement(event.currentTarget);
 
-      api.details(noteId, detailsResponse => {
-        store.currentNote = detailsResponse;
-        render();
-      });
+      // api.details(noteId, detailsResponse => {
+      //   store.currentNote = detailsResponse;
+      //   render();
+      // });
+
+      api.details(noteId)
+        .then(detailsResponse => {
+          store.currentNote = detailsResponse;
+          render();
+        });
 
     });
   }
