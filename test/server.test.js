@@ -8,18 +8,6 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe('Reality check', function () {
-
-  it('true should be true', function () {
-    expect(true).to.be.true;
-  });
-
-  it('2 + 2 should equal 4', function () {
-    expect(2 + 2).to.equal(4);
-  });
-
-});
-
 describe('Express static', function () {
 
   it('GET request "/" should return the index page', function () {
@@ -43,5 +31,75 @@ describe('404 handler', function () {
         expect(res).to.have.status(404);
       });
   });
+
+});
+
+describe('GET /api/notes', function () {
+
+  it('should return the default of 10 Notes as an array', function () {
+    return chai.request(app)
+      .get('/api/notes')
+      .then(function (res) {
+        expect(res).to.exist;
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.a('array');
+        expect(res.body.length).to.equal(10);
+      });
+  });
+
+  it('should return an array of objects with the id, title and content', function () {
+    return chai.request(app)
+      .get('/api/notes')
+      .then(function (res) {
+        expect(res).to.exist;
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+        const expectedKeys = ['id', 'title', 'content'];
+        res.body.forEach(function(item) {
+          expect(item).to.be.a('object');
+          expect(item).to.include.keys(expectedKeys);
+        });
+      });
+  });
+
+  it('should return a correct search result for a valid query that returns a single result', function () {
+    return chai.request(app)
+      .get('/api/notes?searchTerm=lady')
+      .then(function (res) {
+        expect(res).to.exist;
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+        expect(res.body.length).to.equal(1);
+        expect(res.body[0].title + ' ' + res.body[0].content).to.include('lady');
+      });
+  });
+
+  it('should return correct search results for a valid query that returns multiple results', function () {
+    return chai.request(app)
+      .get('/api/notes?searchTerm=most')
+      .then(function (res) {
+        expect(res).to.exist;
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+        expect(res.body.length).to.equal(2);
+        expect(res.body[0].title + ' ' + res.body[0].content).to.include('most');
+      });
+  });
+
+  it('should return an empty array for an valid query that returns no results', function () {
+    return chai.request(app)
+      .get('/api/notes?searchTerm=abcd')
+      .then(function (res) {
+        expect(res).to.exist;
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+        expect(res.body.length).to.equal(0);
+      });
+  });
+
 
 });
