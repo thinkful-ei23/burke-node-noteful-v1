@@ -101,5 +101,36 @@ describe('GET /api/notes', function () {
       });
   });
 
+});
+
+
+describe('GET /api/notes/:id', function () {
+
+  it('should return correct note object with id, title and content for a given id', function () {
+    return chai.request(app)
+      .get('/api/notes/1001')
+      .then(function (res) {
+        expect(res).to.exist;
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        const expectedKeys = ["id", "title", "content"];
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.include.keys(expectedKeys);
+        expect(res.body.id).to.equal(1001);
+        // TA: how do I check that the content and title match the response?
+      });
+      
+  });
+
+  it('should respond with a 404 for an invalid id (/api/notes/DOESNOTEXIST)', function () {
+    return chai.request(app)
+      .get('/api/notes/3000')
+      .then(function (res) {
+        expect(res).to.exist;
+        expect(res).to.have.status(404);
+        // how do I check that the content and title match the response?
+      });
+      
+  });
 
 });
