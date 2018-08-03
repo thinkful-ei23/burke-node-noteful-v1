@@ -46,7 +46,7 @@ router.put('/notes/:id', (req, res, next) => {
   });
 
   /***** Never trust users - validate input *****/
-  if (!updateObj.title) {
+  if (req.body.title === '') {
     const err = new Error('Missing `title` in request body');
     err.status = 400;
     return next(err);
@@ -54,7 +54,11 @@ router.put('/notes/:id', (req, res, next) => {
 
   notes.update(id, updateObj)
     .then(item => {
-      res.json(item);
+      if (item) {
+        res.json(item);
+      } else {
+        next();
+      }
     })
     .catch(err => {
       next(err);

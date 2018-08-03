@@ -192,3 +192,61 @@ describe('POST /api/notes/', function () {
 });
 
 
+describe('PUT /api/notes/:id', function () {
+
+  it('should update items on PUT', function() {
+    const updateData = {
+      title: 'CATS',
+      content: 'Posuere sollicitudin aliquam...' 
+    };
+    return (
+      chai
+        .request(app)
+        .get('/api/notes')
+        .then(function(res) {
+          updateData.id = res.body[0].id;
+          return chai
+            .request(app)
+            .put(`/api/notes/${updateData.id}`)
+            .send(updateData);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a('object');
+          expect(res.body).to.deep.equal(updateData);
+        })
+    );
+  });
+
+  it('should respond with a 404 for an invalid id (/api/notes/DOESNOTEXIST)', function() {
+    const updateData = {
+      title: 'CATS',
+      content: 'Posuere sollicitudin aliquam...' 
+    };
+    return chai
+      .request(app)
+      .put('/api/notes/fdslkfjsdfjsodif')
+      .send(updateData)
+      .then(function(res) {
+        expect(res).to.have.status(404);
+      });
+  });
+
+  it('should return an object with a message property "Missing title in request body" when missing "title" field', function() {
+    const updateData = {
+      title: '',
+      content: 'Posuere sollicitudin aliquam...' 
+    };
+    return chai
+      .request(app)
+      .put('/api/notes/1005')
+      .send(updateData)
+      .then(function(res) {
+        expect(res).to.have.status(400);
+        expect(res.body.message).to.equal('Missing `title` in request body');
+      });
+  });
+    
+// should return an object with a message property "Missing title in request body" when missing "title" field
+});

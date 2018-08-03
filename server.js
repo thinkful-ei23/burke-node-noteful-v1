@@ -28,6 +28,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (err, req, res, next) {
+  console.log('error should log out');
   res.status(err.status || 500);
   res.json({
     message: err.message,
