@@ -247,6 +247,19 @@ describe('PUT /api/notes/:id', function () {
         expect(res.body.message).to.equal('Missing `title` in request body');
       });
   });
+
+  it('should delete items by id', function() {
+    return (
+      chai
+        .request(app)
+        .get('/api/notes/')
+        .then(function(res) {
+          return chai.request(app).delete(`/api/notes/${res.body[0].id}`);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+        })
+    );
+  });
     
-// should return an object with a message property "Missing title in request body" when missing "title" field
 });
